@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ImageVideoPlayer extends StatefulWidget {
   const ImageVideoPlayer({super.key});
@@ -56,7 +58,6 @@ class _ImageVideoPlayerState extends State<ImageVideoPlayer> {
   @override
   void initState() {
     super.initState();
-
     timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
       setState(() {
         currentIndex = (currentIndex + 1) % imagePaths.length;
@@ -73,15 +74,71 @@ class _ImageVideoPlayerState extends State<ImageVideoPlayer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AnimatedContainer(
-        alignment: Alignment.center,
-        duration: const Duration(milliseconds: 100),
-        child: Image.asset(
-          imagePaths[currentIndex],
-          width: MediaQuery.of(context).size.width / 2,
+        body: Stack(
+      children: [
+        SizedBox(
+          height: Get.height,
+          width: Get.width,
         ),
-      ),
-    );
+        Transform.rotate(
+          angle: 0.48,
+          child: Transform(
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.005)
+              ..rotateX(0.01 * -95)
+              ..rotateY(-0.01 * -28),
+            child: SizedBox(
+              width: 100,
+              height: 400,
+              child: CustomPaint(
+                painter: OpenPainter(),
+              ),
+            ),
+          ),
+        ),
+        Image.asset(
+          "assets/location.png",
+          width: Get.width,
+          height: Get.height,
+        ),
+        Transform.rotate(
+          angle: 0.47,
+          child: Transform(
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.005)
+              ..rotateX(0.01 * -5)
+              ..rotateY(-0.01 * -2),
+            child: AnimatedContainer(
+              alignment: Alignment.center,
+              duration: const Duration(milliseconds: 100),
+              child: Image.asset(
+                imagePaths[currentIndex],
+                width: MediaQuery.of(context).size.width / 2,
+              ),
+            ),
+          ),
+        ),
+      ],
+    ));
   }
 }
 
+class OpenPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint1 = Paint()
+      ..color = Color(0xffF3E6DD)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 80;
+    //draw arc
+    canvas.drawArc(
+        const Offset(-320, 0) & const Size(400, 400),
+        3 * math.pi / 2, //radians
+        3, //radians
+        false,
+        paint1);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
+}

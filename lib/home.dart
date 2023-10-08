@@ -300,13 +300,13 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
+            const SizedBox(height: 20),
             _simpleWay(),
           ],
         ),
       ),
     );
   }
-
   _simpleWay() {
     return Container(
       width: Get.width / 1.1,
@@ -349,7 +349,18 @@ class _HomeState extends State<Home> {
               ),
             ],
           ),
-          Image.asset('assets/location.png')
+          const Spacer(),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Icon(
+                  Icons.location_on,
+                  color: Colors.red,
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );

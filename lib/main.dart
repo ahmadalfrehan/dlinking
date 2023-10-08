@@ -1,5 +1,9 @@
+import 'package:animated_bottom_navbar/bottom-navbar/app-bottom-navigation-bar.dart';
+import 'package:flut_blue/q.dart';
+import 'package:flut_blue/third.dart';
 import 'package:flutter/material.dart';
 
+// import 'dart:ffi' as df;
 import 'home.dart';
 
 ///adb shell am start -a android.intent.action.VIEW -d https://ahmadalfrehan.com/details com.ahmadalfrehan.deeplinking
@@ -28,22 +32,37 @@ class ToBeBottomNavBar extends StatefulWidget {
 }
 
 class _ToBeBottomNavBarState extends State<ToBeBottomNavBar> {
+  int currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(
-        children: [
-          const Home(),
-          Container(),
-          Container(),
+        index: currentIndex,
+        children: const [
+          Home(),
+          ImageVideoPlayer(),
+          Third(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.add_circle), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.add_circle), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.add_circle), label: "Home")
+      bottomNavigationBar: AppBottomNavBar(
+        labels: const [
+          "home",
+          "another",
+          "third",
         ],
+        tabIconColor: Colors.red,
+        onTabItemSelected: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+        images: const [
+          'assets/icons/analytics.svg',
+          'assets/icons/clock.svg',
+          'assets/icons/profile.svg',
+        ],
+        initialSelectedTab: 'home',
       ),
     );
   }
